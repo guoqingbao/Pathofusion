@@ -21,7 +21,7 @@ We also provide the source code for the pathology image labelling website, and y
 
 ## Video demonstration
 
-https://cloudstor.aarnet.edu.au/plus/s/X8N1Pns2iVTYY2K
+https://cloudstor.aarnet.edu.au/plus/s/zmmMehQXyA7Pp0Q
 
 
 # The code
