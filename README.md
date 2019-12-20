@@ -10,11 +10,11 @@ matplotlib, sqlite3, pandas, scipy, scikit-learn, pytorch, tensorflow and keras
 
 
 ## The dataset
-We provide datasets used in our study under folder "data". Please contact corresponding author professor Manuel B. Graeber (manuel.graeber@sydney.edu.au) if you need raw whole-slide images.
+The datasets used in our study were provided under folder "data". Please contact corresponding author professor Manuel B. Graeber (manuel.graeber@sydney.edu.au) if you need raw whole-slide images.
 
 
 ## Pretrained models
-We provide pretrained models under results/bdcnn (torch_model.h5 and torch_model_cd276.h5) for feature recognition of H&E and IHC images. Please refer to BrainPredction.py or BrainPredction-276.py. Colour normalization of your whole-slides images is required before using the pretrained models (a reference image is given under folder "others"). You may also train your own model using code provided. Usually, 30+ training cases are recommended.
+Pretrained models were provided under results/bdcnn (torch_model.h5 and torch_model_cd276.h5) for recognition of two modality neuro-features from whole-slide images. Please refer to BrainPredction.py or BrainPredction-276.py. Colour normalization of your whole-slides images is required before using the pretrained models (a reference image is given under folder "others"). You may also train your own model using code provided. Usually, 30+ training cases are recommended.
 
 ## The marking system (labelling website)
 We also provide the source code for the pathology image labelling website, and you can perform off-line marking of your own whole-slides images in the intranet. You can use code provided (ExtractImagePatches.py) to establish your pathology database first, then you train your model using code provided. For non-commercial usage, please contact corresponding author to obtain the source code of the labelling website.
@@ -23,14 +23,14 @@ We also provide the source code for the pathology image labelling website, and y
 
 https://cloudstor.aarnet.edu.au/plus/s/zmmMehQXyA7Pp0Q
 
-In the video, it first shown the original H&E, next the predicted heatmap was overlaid, then the prediction was compared with expert markings.
+In the video, the original H&E is first shown; next, the predicted heatmap was overlai; fianlly, the prediction was compared with expert markings.
 
 # The code
 
 ### 1. Extracting image patches (ExtractImagePatches.py)
 Make sure you deployed the labelling website first. After you finished image marking, you use this module to extract paired patches from the whole-slide images using marking coordinates saved in MySql database (website database). While you can also use our provided datasets (under folder "data") for reproducibility measurements.
 
-### 2. Model struction
+### 2. Model structure
 Please refer to folder "models" and BrainModel.py.
 
 ### 3. Training models for recognition
@@ -47,6 +47,6 @@ After the models trained (or using trained models provided), you can predict the
 ### 6. The fusion
 BrainPredction.py provides functions for fusion. 
 
-### 7. Overlap analysis
+### 7. Multimodal overlap analysis
 Please refer to BrainPositivePercent.py.
 
