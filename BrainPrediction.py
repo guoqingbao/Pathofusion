@@ -31,13 +31,10 @@ gc.enable()
 
 # import helper function (database manupulation, image augmentation, plot performance, train, etc.)
 from models.helper import *
-# import our BDCNN from models
-from models.bdcnn import BDCNN
+# import our BCNN from models
+from models.bcnn import BCNN
 
-# %% [markdown]
 # # Prepare whole-slide images and model
-
-# %%
 GRADE = 4
 PATIENT_ID = 23 # remember to change this when you prediction other whole-slide images
 image_name = "Image_P" + str(PATIENT_ID) # the  whole-slide image file name that we will predict
@@ -57,7 +54,6 @@ x = 512/2
 y = 512/2
 
 
-# %%
 stride = 50
 
 cols = int((w - 512)/stride) - int(256/stride)
@@ -66,19 +62,14 @@ rows = int((h - 512)/stride) - int(256/stride)
 print("Width={}, height={}, start from (x={}, y={}), stride={}, total rows={}, total columns={})".format(w, h, x, y,stride, rows, cols))
 
 
-# %%
 
-
-
-# %%
 project_path = './'
 path = project_path + "results/prediction/"
-model_path = project_path + "results/bdcnn/"
+model_path = project_path + "results/bcnn/"
 
 
-# %%
 # load trained model
-model = BDCNN(6)
+model = BCNN(6)
 model = nn.DataParallel(model).cuda()
 
 checkPoint = torch.load(model_path + 'torch_model.h5')
@@ -87,12 +78,9 @@ print('Number of model parameters: {}'.format(
         sum([p.data.nelement() for p in model.parameters()])))
 
 
-# %%
 
-
-
-# %%
-# to re-predict the whole-slide images, you may delete prediction_index files (under results/prediction), otherwise it will use the existed prediction results
+# to re-predict the whole-slide images, you may delete prediction_index files (under results/prediction),
+# otherwise it will use the existed prediction results
 total = rows * cols
 progress = 0
 prediction_array = None
@@ -110,10 +98,9 @@ try:
 except OSError:
     print("file not found")
 
-# %% [markdown]
+
 # # Prediction of the whole-slide images (patch by patch approach)
 
-# %%
 model.eval()
 
 # let's predict the whole-slide image patch by patch
@@ -180,18 +167,15 @@ for row in range(start_row,rows):
         print('Processed {}% '.format(progress))     
 
 
-# %%
 #load prediction results
 prediction_array = np.load(path + 'prediction_array'+str(PATIENT_ID) + '.npy')
 intensity_array = np.load(path + 'intensity_array'+str(PATIENT_ID) + '.npy')
 
 
-# %%
 d_intensity = np.array(intensity_array)
 bk_position = np.where(d_intensity>230)[0].tolist()
 
 
-# %%
 #1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor, 7 Satellitosis (tiny)
 # color_types = {1:'black', 2:'yellow', 3:'blue', 4:'cyan',5:'grey', 6:'green', 7:'purple'}
 
@@ -206,26 +190,20 @@ colors.append([1,1,1])# white Magenta  5 Brain-Tissue
 
 colors.append([0,0.7,0.7]) #green tumor background
 
-
-# %%
 typeret = np.argmax(prediction_array,axis=1)
 typeret = typeret + 1
 typeret[bk_position]=0
 totalArea = np.sum(typeret!=0)
 totalArea
 
-
-# %%
 counts = []
 for i in range(6):
     counts.append(np.sum(typeret==i+1))
 
 
-# %%
 pd.DataFrame(counts, columns=['Type']).T
 
 
-# %%
 #1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor background
 #let's see distribution of the predicted results
 fig, ax = plt.subplots(figsize=(12, 6), subplot_kw=dict(aspect="equal"))
@@ -257,15 +235,11 @@ plt.savefig(path + 'distribution_pattern'+str(PATIENT_ID)+ '.svg',format='svg')
 plt.show()
 
 
-# %%
 
 
-# %% [markdown]
 # # Multimodal histopathology image fusion
-# %% [markdown]
 # ## 1. Convert to color heatmap
 
-# %%
 colors = np.array(colors)
 predicts = []
 predicts_bin = []
@@ -278,7 +252,6 @@ predicts = np.array(predicts)
 predicts_bin = np.array(predicts_bin)   
 
 
-# %%
 # color-mapping, plot the heatmap
 r_channel = predicts[:,0] 
 r_channel[bk_position] = 0
@@ -317,24 +290,19 @@ plt.savefig(path + 'brain_heatmap'+str(PATIENT_ID)+ '.svg',format='svg')
 
 cv2.imwrite(path + 'brain_heatmap_bin'+str(PATIENT_ID) +'.bmp', cv2.merge([b, g,r])*255)
 
-# %% [markdown]
 # # Upload predicted heatmap to labelling website
 
-# %%
 # Upload the above heatmap to your labelling website (WebLabelling/labelling/static/labelling) to see how heatmap overlaid on H&E images.
 # Please make sure the name of the heatmap changed to Image_Pxx_Heatmap.bmp, Image_Pxx is the name of corresponding H&E image.
 
-# %% [markdown]
 # ## 2. Heatmap registration (alignment)
 
-# %%
 im1 =  cv2.imread(path + 'brain_heatmap_bin' + str(PATIENT_ID) + '.bmp' )
 im2 =  cv2.imread(project_path + 'results/prediction_cd276/brain_cd276_heatmap_bin' + str(PATIENT_ID) + '.bmp')
 im22 =  cv2.imread(project_path + 'results/prediction_cd276/brain_cd276_heatmap' + str(PATIENT_ID) + '.bmp')
 heatmap =  cv2.imread(path + 'brain_heatmap' + str(PATIENT_ID) + '.bmp' )
 
 
-# %%
 # image registration
 im1_gray = cv2.cvtColor(im1,cv2.COLOR_BGR2GRAY)
 im1_gray[im1_gray >0] = 128
@@ -361,7 +329,6 @@ else :
     im2_aligned = cv2.warpAffine(im2, warp_matrix, (sz[1],sz[0]), flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP);
 
 
-# %%
 #let's see cd276 heatmap after alignment
 fig, ax = plt.subplots(1,3, sharex=True, figsize=(18,6))
 ax[0].imshow(np.array(cv2.cvtColor(im1, cv2.COLOR_RGB2BGR)))
@@ -373,7 +340,6 @@ ax[2].title.set_text("CD276 Classification Heatmap (Aligned)")
 plt.savefig(path + 'merged_process'+str(PATIENT_ID)+ '.svg',format='svg') 
 
 
-# %%
 #we need to remove regions in cd276 heatmap that not included in h&e heatmap
 
 gray = cv2.cvtColor(im1,cv2.COLOR_BGR2GRAY)
@@ -384,22 +350,14 @@ im2_aligned_excluded = cv2.bitwise_and(im2_aligned1, im2_aligned1, mask=mask)
 
 plt.imshow(im2_aligned_excluded)
 
-
-# %%
 im2_aligned_excluded = np.round(im2_aligned_excluded/255.0,0).astype(np.uint8)*int(255) #repair cd276 heatmap (registration introduced noise)
 
 
-# %%
 cv2.imwrite(path + 'brain_cd276_heatmap_aligned_bin' + str(PATIENT_ID) + '.bmp', cv2.cvtColor(im2_aligned_excluded,cv2.COLOR_BGR2RGB))
 
 
-# %%
-
-
-# %% [markdown]
 # ## 3. Fusion of the corresponding heatmaps
 
-# %%
 im2_aligned_excluded1 = cv2.cvtColor(im2_aligned_excluded, cv2.COLOR_BGR2RGB)
 combined = im1 | im2_aligned_excluded1
 bgrCombined = cv2.cvtColor(combined, cv2.COLOR_RGB2BGR)
@@ -416,7 +374,6 @@ ax[1].title.set_text("H&E and CD276 Heatmap Merged (Undetected Excluded)")
 cv2.imwrite(path + 'brain_heatmap_merge_bin' + str(PATIENT_ID) + '.bmp', cv2.cvtColor(bgrCombined_excluded,cv2.COLOR_BGR2RGB))
 
 
-# %%
 fig, ax = plt.subplots(4,1, figsize=(5,19), sharex='col', sharey='row')
 fig.subplots_adjust(wspace=0.001, hspace=0.001)
 ax[0].imshow(np.array(cv2.cvtColor(heatmap, cv2.COLOR_RGB2BGR)) )
@@ -434,13 +391,8 @@ ax[3].imshow(bgrCombined_excluded)
 plt.savefig(path + 'side_by_side'+str(PATIENT_ID)+ '.png',format='png')
 
 
-# %%
-
-
-# %% [markdown]
 # # Quantatitive analysis
 
-# %%
 colors_merged = []
 
 colors_merged.append([1,0,0]) # necrosis palisading + positive  --> (red)
@@ -453,13 +405,11 @@ colors_merged.append([1,0.7,0.7]) #tumor background + positive (rgb(255,178,178)
 colors_merged.append([0,1,1]) #tumor background + negative, MicVas-Proliferation + negative , # blood-vessel + negative --> (cyan)
 
 
-# %%
 gray = cv2.cvtColor(bgrCombined_excluded,cv2.COLOR_BGR2GRAY)
 _,allMask = cv2.threshold(gray, 5, 255, cv2.THRESH_BINARY);
 total = np.sum(allMask==255) #total pixels excludes picture black background
 
 
-# %%
 labels = ["Necrosis Palisading \n+ CD276 Positive","MicVas-Proliferation \n+ CD276 Positive",
           "Necrosis Palisading, \nNecrosis-Geo or Brain-Tissue \n+ CD276 Negative \n/ Blood Vessel or Brain Tissue \n+ CD276 Positive",
           "Necrosis-Geo \n+ CD276 Positive", 
@@ -467,7 +417,6 @@ labels = ["Necrosis Palisading \n+ CD276 Positive","MicVas-Proliferation \n+ CD2
           "Tumor Background, \nMicVas-Proliferation or\n Blood-vessel + CD276 Negative"]
 
 
-# %%
 counts1 = []
 rets = []
 fig, ax = plt.subplots(2,3, sharex=True, figsize=(20,12))
@@ -504,7 +453,6 @@ plt.savefig(path + 'merged_separation'+str(PATIENT_ID)+ '.svg',format='svg')
 plt.show()
 
 
-# %%
 fig, ax = plt.subplots(figsize=(10, 6), subplot_kw=dict(aspect="equal"))
 
 pie_chart_exploded = (0.03, 0.03, 0.03, 0.03, 0.03, 0.03)
@@ -531,8 +479,6 @@ ax.set_title("Distribution Merged Pattern",size=12, weight="bold")
 plt.savefig(path + 'distribution_merge_pattern'+str(PATIENT_ID)+ '.svg',format='svg')
 plt.show()
 
-
-# %%
 
 
 
