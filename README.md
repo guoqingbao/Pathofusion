@@ -23,7 +23,7 @@ We also provide the source code for the pathology image labelling website, and y
 
 https://cloudstor.aarnet.edu.au/plus/s/zmmMehQXyA7Pp0Q
 
-In the video, the original H&E is first shown; next, the predicted heatmap was overlai; fianlly, the prediction was compared with expert markings.
+In the video, the original H&E is first shown; next, the predicted heatmap was overlaid; fianlly, the prediction was compared with expert markings.
 
 # The code
 
@@ -45,7 +45,7 @@ The model introduced in this study was compared with Xception (BrainXception.py)
 After the models trained (or using trained models provided), you can predict the heatmaps of unknown histological slides using BrainPredction.py and BrainPredction-CD276.py. 
 
 ### 6. The fusion
-BrainPredction.py provides functions for fusion. 
+BrainPredction.py provides functions for fusion of multimodal whole-slide images. 
 
 ### 7. Multimodal overlap analysis
 Please refer to BrainPositivePercent.py.
