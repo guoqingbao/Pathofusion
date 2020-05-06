@@ -61,10 +61,10 @@ class SubNet(nn.Module):
             in_channel, stride = out_channel, 1 # only first convolution have a stride of 2
         return nn.Sequential(*layers)
 
-# The BDCNN composed of two subnets
-class BDCNN(nn.Module):
+# The BCNN composed of two subnets
+class BCNN(nn.Module):
     def __init__(self, n_classes, init_conv_batch=True):
-        super(BDCNN, self).__init__()
+        super(BCNN, self).__init__()
         self.path1 = SubNet(16, init_conv_batch)
         self.path2 = SubNet(16, init_conv_batch)
 
