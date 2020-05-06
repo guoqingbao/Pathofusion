@@ -35,22 +35,22 @@ config.gpu_options.allow_growth=True
 # import helper function (database manupulation, image augmentation, plot performance, train, etc.)
 from models.helper import *
 
-# import our BDCNN from models
-from models.bdcnn import BDCNN
+# import our BCNN from models
+from models.bcnn import BCNN
 
 
-# %%
+
 project_path = './'
 
 
-# %%
-path = project_path + "results/bdcnn_combination/"
+
+path = project_path + "results/bcnn_combination/"
 x_train, y_train, x_test, y_test = load_data(project_path + "data/brain_labeling_64.db", test_patient_ids, False) # we only need IDs and types at this stage
 
-# %% [markdown]
+
 # # Compare the performance of DRCNN using different patch resolutions
 
-# %%
+
 # the combination of image patches
 tasks = [[64,128],[64, 256], [64,512], [128,256], [128,512]]
 
@@ -64,7 +64,7 @@ for resolution in tasks:
     trainLoader = DataGenerator(x_train, y_train, connections=[conn_small, conn_large], image_sizes=resolution, augment=True, classes=6)
     testLoader = DataGenerator(x_test, y_test, connections=[conn_small, conn_large], image_sizes=resolution, augment=False, classes=6)
     # construct our model
-    model = BDCNN(6)
+    model = BCNN(6)
     print('Number of model parameters: {}'.format(
             sum([p.data.nelement() for p in model.parameters()])))
     
@@ -115,7 +115,6 @@ for resolution in tasks:
     print("*************************************\r\n")
 
 
-# %%
 
 
 
