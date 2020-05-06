@@ -30,13 +30,12 @@ import gc
 gc.enable()
 # import helper function (database manupulation, image augmentation, plot performance, train, etc.)
 from models.helper import *
-# import our BDCNN from models
-from models.bdcnn import BDCNN
+# import our BCNN from models
+from models.bcnn import BCNN
 
-# %% [markdown]
+
 # # Prepare whole-slide images and model
 
-# %%
 GRADE = 4
 PATIENT_ID = 23 # remember to change this when you prediction other whole-slide images
 
@@ -58,7 +57,6 @@ x = 512/2
 y = 512/2
 
 
-# %%
 stride = 50
 
 cols = int((w - 512)/stride) - int(256/stride)
@@ -67,15 +65,13 @@ rows = int((h - 512)/stride) - int(256/stride)
 print("Width={}, height={}, start from (x={}, y={}), stride={}, total rows={}, total columns={})".format(w, h, x, y,stride, rows, cols))
 
 
-# %%
 project_path = './'
 path = project_path + "results/prediction_cd276/"
-model_path = project_path + "results/bdcnn/"
+model_path = project_path + "results/bcnn/"
 
 
-# %%
 # load trained model
-model = BDCNN(2, False)
+model = BCNN(2, False)
 checkPoint = torch.load(model_path + 'torch_model_cd276.h5')
 model.load_state_dict(checkPoint)
 model = nn.DataParallel(model).cuda()
@@ -83,13 +79,10 @@ print('Number of model parameters: {}'.format(
         sum([p.data.nelement() for p in model.parameters()])))
 
 
-# %%
 
 
-
-# %%
-# to re-predict the whole-slide images, you may delete prediction_index files (under results/prediction_cd276), otherwise it will use the existed prediction results
-
+# to re-predict the whole-slide images, you may delete prediction_index files (under results/prediction_cd276), 
+#otherwise it will use the existed prediction results
 total = rows * cols
 progress = 0
 prediction_array = None
@@ -107,10 +100,8 @@ try:
 except OSError:
     print("file not found")
 
-# %% [markdown]
-# # Prediction of the whole-slide images (patch by patch approach)
 
-# %%
+# # Prediction of the whole-slide images (patch by patch approach)
 model.eval()
 # let's predict the whole-slide image patch by patch
 # cropped from up-left to bottom-right
@@ -174,25 +165,21 @@ for row in range(start_row,rows):
         print('Processed {}% '.format(progress))    
 
 
-# %%
 #load prediction results
 prediction_array = np.load(path + 'prediction_array'+str(PATIENT_ID) + '.npy')
 intensity_array = np.load(path + 'intensity_array'+str(PATIENT_ID) + '.npy')
 
 
-# %%
 d_intensity = np.array(intensity_array)
 bk_position = np.where(d_intensity>235)[0].tolist()
 
 
-# %%
 colors = []
 
 colors.append([0,1,1]) #cyan negative or low expression
 colors.append([1,0,0]) #red medium and high positive
 
 
-# %%
 typeret = np.argmax(prediction_array,axis=1)
 typeret = typeret + 1
 typeret[bk_position]=0
@@ -200,17 +187,13 @@ totalArea = np.sum(typeret!=0)
 totalArea
 
 
-# %%
 counts = []
 for i in range(2):
     counts.append(np.sum(typeret==i+1))
 
-
-# %%
 pd.DataFrame(counts, columns=['Type']).T
 
 
-# %%
 #let's see distribution of the predicted results
 fig, ax = plt.subplots(figsize=(12, 6), subplot_kw=dict(aspect="equal"))
 
@@ -240,10 +223,8 @@ ax.set_title("Distribution Pattern",size=12, weight="bold")
 plt.savefig(path + 'distribution_pattern'+str(PATIENT_ID)+ '.svg',format='svg')
 plt.show()
 
-# %% [markdown]
-# # Convert to color heatmap
 
-# %%
+# # Convert to color heatmap
 colors = np.array(colors)
 predicts = []
 predicts_bin = []
@@ -256,7 +237,6 @@ predicts = np.array(predicts)
 predicts_bin = np.array(predicts_bin)   
 
 
-# %%
 r_channel = predicts[:,0] 
 r_channel[bk_position] = 0
 g_channel = predicts[:,1] 
@@ -295,7 +275,6 @@ plt.savefig(path + 'brain_cd276_heatmap'+str(PATIENT_ID)+ '.svg',format='svg')
 cv2.imwrite(path + 'brain_cd276_heatmap_bin'+str(PATIENT_ID) +'.bmp', cv2.merge([b, g,r])*256)
 
 
-# %%
 
 
 
