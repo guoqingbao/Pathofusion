@@ -14,7 +14,7 @@ The datasets used in our study were provided under folder "data". Please contact
 
 
 ## Pretrained models
-Pretrained models were provided under results/bdcnn (torch_model.h5 and torch_model_cd276.h5) for recognition of two modality neuro-features from whole-slide images. Please refer to BrainPredction.py or BrainPredction-276.py. Colour normalization of your whole-slides images is required before using the pretrained models (a reference image is given under folder "others"). You may also train your own model using code provided. Usually, 30+ training cases are recommended.
+Pretrained models were provided under results/bcnn (torch_model.h5 and torch_model_cd276.h5) for recognition of two modality neuro-features from whole-slide images. Please refer to BrainPredction.py or BrainPredction-276.py. Colour normalization of your whole-slides images is required before using the pretrained models (a reference image is given under folder "others"). You may also train your own model using code provided. Usually, 30+ training cases are recommended.
 
 ## The marking system (labelling website)
 We also provide the source code for the pathology image labelling website, and you can perform off-line marking of your own whole-slides images in the intranet. You can use code provided (ExtractImagePatches.py) to establish your pathology database first, then you train your model using code provided. For non-commercial usage, please contact corresponding author to obtain the source code of the labelling website.
