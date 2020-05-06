@@ -33,64 +33,60 @@ from io import StringIO
 # import helper function (database manupulation, image augmentation, plot performance, train, etc.)
 from models.helper import *
 
-# import our BDCNN from models
-from models.bdcnn import SubNet
+# import our BCNN from models
+from models.bcnn import SubNet
 
-# %% [markdown]
+
 # # Load the pathology image datasets (one resolution)
 
-# %%
+
 project_path = './'
 
 
-# %%
+
 path = project_path + "results/subnet/"
 conn_256 = create_or_open_db(project_path + "data/brain_labeling_256.db")
 
 
-# %%
+
 x_train, y_train, x_test, y_test = load_data(project_path + "data/brain_labeling_256.db", test_ids=test_patient_ids, ihc=False) # patch ID and type
 trainLoader = DataGenerator(x_train, y_train, connections=[conn_256], image_sizes=[256], augment=True, classes=6)
 testLoader = DataGenerator(x_test, y_test, connections=[conn_256], image_sizes=[256], augment=False, classes=6)
 
 
-# %%
+
 df = get_image_ids(conn_256, -1)
 
 
-# %%
+
 len(df)
 
-# %% [markdown]
+
 # # Create a subnet model
 
-# %%
 model = SubNet(6)
 print('Number of model parameters: {}'.format(
         sum([p.data.nelement() for p in model.parameters()])))
 
-# %% [markdown]
+
 # # Load model if exists
 
-# %%
+
 # load the model if we have trained
 if os.path.exists(path + 'torch_model_subnet.h5'):
     checkPoint = torch.load(path + 'torch_model_subnet.h5')
     model = nn.DataParallel(model).cuda()
     model.load_state_dict(checkPoint)
 
-# %% [markdown]
+
 # # Otherwise, train the model
 
-# %%
 if not os.path.exists(path + 'torch_model_subnet.h5'):
     history = train(model, trainLoader, None, multiinputs=False, epochs=50, base_lr=0.005, weight_decay=0.005, log_path=path, log_file='subnet_model.log')
     torch.save(model.state_dict(), path + 'torch_model_subnet.h5')
 
-# %% [markdown]
-# # Evalaute the model on test data
 
-# %%
+# # Evalaute the model on test data
 model.eval()
 probas_ = []
 for i in range(len(testLoader)):
@@ -105,9 +101,8 @@ ac = accuracy_score(y_test, pred)
 print("External Testing accuracy {}\r\n".format(ac))
 
 
-# %%
-# and other test metrics
 
+# and other test metrics
 precision_recall_fscore = []
 
 prf = precision_recall_fscore_support(y_test, pred,average = "weighted")
@@ -124,9 +119,7 @@ metrics.to_excel(path + 'test_metrics_subnet.xlsx')
 metrics
 
 
-# %%
 #classes: 1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor
-
 # the test roc/auc
 yts=[]
 yts.append(y_test)
@@ -135,17 +128,15 @@ pbs.append(probas_)
 mean_tpr, auc_values = roc_plot(6,yts,pbs, path, 'roc_6class_test_subnet')
 
 
-# %%
 #save for later comparison
 np.save(path + 'roc_6class_test_mean_tpr_subnet.npy',mean_tpr)
 np.save(path + 'roc_6class_test_auc_values_subnet.npy',auc_values)
 
 
-# %%
+
 np.mean(auc_values)
 
 
-# %%
 
 
 
