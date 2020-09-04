@@ -5,7 +5,7 @@
 # Please cite our work if you found it is useful for your research or clinical practice
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+# os.environ["CUDA_VISIBLE_DEVICES"]="0"
 import gc
 gc.enable()
 import warnings;
