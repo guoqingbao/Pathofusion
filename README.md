@@ -3,6 +3,7 @@ A deep learning based framework for recognition and fusion of multimodal histopa
 
 This repository contains code and data for two research papers (one was accepted as oral by a tier-A conference, and the other is currently under review by a medical journal).
 
+#### Detecting malignant features from pathology images (visualized as heatmaps)
 ![](/others/prediction.gif)
 
 ## Prerequisites
