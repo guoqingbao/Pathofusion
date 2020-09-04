@@ -1,3 +1,7 @@
+#for quick clone
+*.h5
+*.jpg
+
 # Built application files
 *.apk
 *.ap_
