@@ -3,6 +3,8 @@ A deep learning based framework for recognition and fusion of multimodal histopa
 
 This repository contains code and data for two research papers (one was accepted as oral by a tier-A conference, and the other is currently under review by a medical journal).
 
+![](/others/prediction.gif)
+
 ## Prerequisites
 The following python libraries are required:
 
