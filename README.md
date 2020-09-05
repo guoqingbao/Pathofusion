@@ -3,6 +3,8 @@ A deep learning based framework for recognition and fusion of multimodal histopa
 
 This repository contains code and data for two research papers (one was accepted as oral by a tier-A conference, and the other is currently under review by a medical journal).
 
+#### Advantages: a generic approach for pathology image analysis, less training data, higher recognition performance, utilizing bifocal image tiles, quick marking for training, configurable and open-source framework 
+
 #### Detecting malignant features from pathology images (visualized as heatmaps)
 ![](/others/prediction.gif)
 
@@ -29,7 +31,9 @@ Note: TL stands for transfer learning
 ![](/others/cam.png)
 
 ## Medical part
-The introduction of the Pathofusion framework and its application on neuropathology was drafted as a medical paper, which is submitted recently and is now undergoing peer-review.
+The introduction of the Pathofusion framework and its application on neuropathology was drafted as a medical paper, which is submitted recently and is now undergoing peer-review. 
+#### _Figure illustration will be released soon._
+
 
 ## The dataset
 The datasets used in our study were provided under folder "data". Please contact corresponding author professor Manuel B. Graeber (manuel.graeber@sydney.edu.au) if you need raw whole-slide images.
@@ -40,12 +44,16 @@ Pretrained models were provided under results/bcnn (torch_model.h5 and torch_mod
 
 ## The marking system (labelling website)
 We also provide the source code for the pathology image labelling website, and you can perform off-line marking of your own whole-slides images in the intranet. You can use code provided (ExtractImagePatches.py) to establish your pathology database first, then you train your model using code provided. For non-commercial usage, please contact corresponding author to obtain the source code of the labelling website.
+#### _Labelling/marking website will be released soon._
+
 
 ## Video demonstration
 
 https://cloudstor.aarnet.edu.au/plus/s/zmmMehQXyA7Pp0Q
 
-In the video, the original H&E is first shown; next, the predicted heatmap was overlaid; fianlly, the prediction was compared with expert markings.
+In the video, the original H&E is first shown; 
+next, the predicted heatmap was overlaid; 
+fianlly, the prediction was compared with expert markings.
 
 # The code
 
