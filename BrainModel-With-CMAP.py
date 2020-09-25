@@ -123,7 +123,7 @@ metrics.to_excel(path + 'test_metrics.xlsx')
 metrics
 
 
-#classes: 1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor
+#classes: 1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor Background
 classesnames = ['Necrosis Palisading', 'Microvascular Proliferation', 'Blood Vessel', 'Necrosis Geographic', 'Brain Tissue', 'Tumor Background']
 colors = ['red', 'blue', 'cyan','yellow','lightgrey','green','black']
 
