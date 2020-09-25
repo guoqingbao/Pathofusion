@@ -114,7 +114,7 @@ metrics.to_excel(path + 'test_metrics.xlsx')
 metrics
 
 
-#classes: 1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor
+#classes: 1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor Background
 # the test roc/auc
 yts=[]
 yts.append(y_test)
