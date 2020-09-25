@@ -176,8 +176,8 @@ d_intensity = np.array(intensity_array)
 bk_position = np.where(d_intensity>230)[0].tolist()
 
 
-#1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor, 7 Satellitosis (tiny)
-# color_types = {1:'black', 2:'yellow', 3:'blue', 4:'cyan',5:'grey', 6:'green', 7:'purple'}
+#1 Necrosis-palisading, 2 MicVas-Proliferation, 3 Blood-Vessel, 4 Necrosis-Geo, 5 Brain-Tissue, 6 Tumor Background
+# color_types = {1:'black', 2:'yellow', 3:'blue', 4:'cyan',5:'grey', 6:'green'}
 
 colors = []
 
