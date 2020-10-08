@@ -1,10 +1,6 @@
 # Pathofusion
 A deep learning based framework for recognition and fusion of multimodal histopathological images
 
-This repository contains code and data for two research papers (one was accepted as oral by a tier-A conference, and the other is currently under review by a medical journal).
-
-#### Advantages: a generic approach for pathology image analysis, less training data, higher recognition performance, utilizing bifocal image tiles, quick marking for training, configurable and open-source framework 
-
 #### Detecting malignant features from pathology images (visualized as heatmaps)
 ![](/others/prediction.gif)
 
@@ -13,26 +9,11 @@ The following python libraries are required:
 
 matplotlib, sqlite3, pandas, scipy, scikit-learn, pytorch, tensorflow and keras
 
-## Technical part
-Technical part of the Pathofusion framework was accepted as oral by 16th International Conference on Control, Automation, Robotics and Vision (ICARCV 2020):
-
-#### Can be cited as:
-
-Guoqing Bao, Manuel B. Graeber, Xiuying Wang, "A Bifocal Classification and Fusion Network for Multimodal Image Analysis in Histopathology", 16th International Conference on Control, Automation, Robotics and Vision (ICARCV 2020), In Press.
-
-#### Technical architecture
+#### Architecture
 ![](/others/architecture.png)
-
-#### Comparison with state-of-the-art
-![](/others/compare.png)
-Note: TL stands for transfer learning
 
 #### CAM visualization illustrates the underlying mechanism of the bifocal design
 ![](/others/cam.png)
-
-## Medical part
-The introduction of the Pathofusion framework and its application on neuropathology was drafted as a medical paper, which is submitted recently and is now undergoing peer-review. 
-#### _Figure illustration will be released soon._
 
 
 ## The dataset
