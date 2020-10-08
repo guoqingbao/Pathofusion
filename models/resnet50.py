@@ -7,8 +7,10 @@ InProceedings of the IEEE conference on computer vision and pattern recognition 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 def conv3x3(in_planes, out_planes, stride=1):
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False)
+
 def conv3x3_bn(in_planes, out_planes, stride=1, kernels=[]):
     return nn.Sequential(nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False),
             nn.BatchNorm2d(out_planes))
