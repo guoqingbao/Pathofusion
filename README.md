@@ -17,7 +17,7 @@ matplotlib, sqlite3, pandas, scipy, scikit-learn, pytorch, tensorflow and keras
 
 
 ## The dataset
-The datasets used in our study were provided under folder "data". Please contact corresponding author professor Manuel B. Graeber (manuel.graeber@sydney.edu.au) if you need raw whole-slide images.
+The datasets used in our study were provided under folder "data". Raw data may be provided upon requests. 
 
 
 ## Pretrained models
@@ -30,7 +30,7 @@ We also provide the source code for the pathology image labelling website, and y
 
 ## Video demonstration
 
-https://cloudstor.aarnet.edu.au/plus/s/zmmMehQXyA7Pp0Q
+https://cloudstor.aarnet.edu.au/plus/s/aiaBLAmT9S8Uj8n
 
 In the video, the original H&E is first shown; 
 next, the predicted heatmap was overlaid; 
