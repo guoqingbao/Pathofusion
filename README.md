@@ -30,7 +30,7 @@ We also provide the source code for the pathology image labelling website, and y
 
 ## Video demonstration
 
-https://cloudstor.aarnet.edu.au/plus/s/a9VMfxE68kvHPHO
+https://cloudstor.aarnet.edu.au/plus/s/dVmEp2R87lFhc6v
 
 In the video, the original H&E is first shown; 
 next, the predicted heatmap was overlaid; 
