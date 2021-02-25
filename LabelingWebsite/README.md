@@ -47,24 +47,18 @@ You may repeat 1) - 6) for many times until you find a optimal model you think t
 # How to add records?
 
 1) Goto admin portal of your website and add a user with ImageGroup permission (permitted to marking)
-
-![](/others/user_and_permission.png)
+![](./others/user_and_permission.png)
 
 2) Click the ImageList and add a record as follow:
 
-![](/others/add_records.png)
+![](./others/add_records.png)
 
 Please make sure the file (you added in the list) is under your website static folder (labelling/static/labelling/)
 
 3) Define categories of your study and assign to the expert user (who mark the images) 
 
-![](/others/categories_marking_config.png)
+![](./others/categories_marking_config.png)
 
 Please make sure the user have ImageGroup permission.
 
 4) Go to you website main page and enjoy your marking
-
-## This website is part of the PathoFusion framework
-
-### The website is based on Django and python, which provide H&E and IHC pathology image labeling. 
-### The labeling results can be used for training deep learning models.
