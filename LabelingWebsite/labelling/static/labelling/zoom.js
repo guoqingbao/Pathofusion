@@ -1,3 +1,12 @@
+/*
+# Author: Guoqing Bao
+# School of Computer Science, The University of Sydney
+# Date: 2019-12-12
+# GitHub Project Link: https://github.com/guoqingbao/Pathofusion
+# Please cite our work if you found it is useful for your research or clinical practice
+
+# core code for marking
+*/
 
 var canvas = document.getElementsByTagName('canvas')[0];
 canvas.width = window.innerWidth;
