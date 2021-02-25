@@ -1,7 +1,7 @@
 # Pathofusion
 A deep learning based framework for recognition and fusion of multimodal histopathological images
 
-### Good news! The source for Labelling website is now released, please see the folder "LabellingWebsite"
+### Good news! The source for Labelling website is now released, please see the folder "LabelingWebsite"
 
 #### Detecting malignant features from pathology images (visualized as heatmaps)
 ![](/others/prediction.gif)
@@ -27,7 +27,7 @@ Pretrained models were provided under results/bcnn (torch_model.h5 and torch_mod
 
 ## The marking system (labelling website)
 We also provide the source code for the pathology image labelling website, and you can perform off-line marking of your own whole-slides images in the intranet. You can use code provided (ExtractImagePatches.py) to establish your pathology database first, then you train your model using code provided. For non-commercial usage, please contact corresponding author to obtain the source code of the labelling website.
-#### Please see the folder "LabellingWebsite"
+#### Please see the folder "LabelingWebsite"
 
 
 ## Video demonstration
