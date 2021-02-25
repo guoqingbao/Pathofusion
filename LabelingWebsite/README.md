@@ -1,7 +1,7 @@
 # Patholabelling
-An open-source website for marking histopathology images. It is a part of our research project: https://github.com/guoqingbao/Pathofusion 
+An open-source website for marking histopathology images. It is a part of Pathofusion framework.
 
-This repository is made public for a research paper that currently under review:
+This repository is made public for the published research papers.
 
 # Video demonstration:
 
