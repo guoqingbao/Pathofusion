@@ -1,7 +1,14 @@
 # Pathofusion
 A deep learning based framework for recognition and fusion of multimodal histopathological images
 
-### Good news! The source for Labelling website is now released, please see the folder "LabelingWebsite" or visit standalone code base: https://github.com/guoqingbao/Patholabelling
+### Good news! 
+
+#### The source for Labelling website is now released, please see the folder "LabelingWebsite" or visit standalone code base: https://github.com/guoqingbao/Patholabelling
+
+## Citation for AI framework
+
+Bao G, Wang X, Xu R, Loh C, Adeyinka OD, Pieris DA, Cherepanoff S, Gracie G, Lee M, McDonald KL, Nowak AK, Banati R, Buckland ME, Graeber MB. PathoFusion: An Open-Source AI Framework for Recognition of Pathomorphological Features and Mapping of Immunohistochemical Data. Cancers. 2021; 13(4):617. https://doi.org/10.3390/cancers13040617
+
 
 #### Detecting malignant features from pathology images (visualized as heatmaps)
 ![](/others/prediction.gif)
@@ -11,12 +18,14 @@ The following python libraries are required:
 
 matplotlib, sqlite3, pandas, scipy, scikit-learn, pytorch, tensorflow and keras
 
-#### Architecture
+### Architecture
 ![](/others/architecture.png)
 
 #### CAM visualization illustrates the underlying mechanism of the bifocal design
 ![](/others/cam.png)
 
+##### Citation for Methods 
+Bao G, Graeber MB and Wang X. A Bifocal Classification and Fusion Network for Multimodal Image Analysis in Histopathology.  16th International Conference on Control, Automation, Robotics and Vision (ICARCV), 2020, pp. 466-471, doi: 10.1109/ICARCV50220.2020.9305360.
 
 ## The dataset
 The datasets used in our study were provided under folder "data". Raw data may be provided upon requests. 
@@ -30,13 +39,17 @@ We also provide the source code for the pathology image labelling website, and y
 #### Please see the folder "LabelingWebsite", newest updates can be found in the standalone code base: https://github.com/guoqingbao/Patholabelling
 
 
-## Video demonstration
+## Video demonstration 
 
+### for the framework
 https://cloudstor.aarnet.edu.au/plus/s/dVmEp2R87lFhc6v
 
 In the video, the original H&E is first shown; 
 next, the predicted heatmap was overlaid; 
 fianlly, the prediction was compared with expert markings.
+
+### for the labeling website
+https://cloudstor.aarnet.edu.au/plus/s/JSASsezqvrB9sgA
 
 # The code
 
