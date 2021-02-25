@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Patholabelling
 An open-source website for marking histopathology images. It is a part of our research project: https://github.com/guoqingbao/Pathofusion 
 
@@ -65,9 +64,7 @@ Please make sure the user have ImageGroup permission.
 
 4) Go to you website main page and enjoy your marking
 
-=======
 ## This website is part of the PathoFusion framework
 
 ### The website is based on Django and python, which provide H&E and IHC pathology image labeling. 
 ### The labeling results can be used for training deep learning models.
->>>>>>> d7d1d702d14c0e575811298203430875a7ca0ebb
