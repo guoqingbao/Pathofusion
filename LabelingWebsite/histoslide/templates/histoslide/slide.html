@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pathology Image Labelling</title>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"> </script>
+<script type="text/javascript" src="/static/histoslide/js/openseadragon.js"></script>
+<script type="text/javascript" src="/static/histoslide/js/openseadragon-scalebar.js"></script>
+
+<style>
+        html {
+            overflow: hidden;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        div#view {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: white;
+        }
+</style>
+
+
+</head>
+
+
+<body>
+
+<div id = "view"></div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var viewer;
+    var viewer_is_new;
+
+    function open_slide(link) {
+        // Load info objects
+        var image;
+        image=link;
+        // Create viewer if necessary
+        if (!viewer) {
+            viewer = new OpenSeadragon({
+                id: "view",
+                prefixUrl: "/static/histoslide/images/",
+                showNavigator: true,
+                animationTime: 0.5,
+                blendTime: 0.1,
+                constrainDuringPan: true,
+                maxZoomPixelRatio: 2,
+                minPixelRatio: 0.5,
+                minZoomLevel: 1,
+                visibilityRatio: 1,
+                zoomPerScroll: 2
+            });
+            viewer.addHandler("open", function() {
+                viewer.source.minLevel = 8;
+                /* Start zoomed in, then return to home position after
+                   loading.  Workaround for blurry viewport on initial
+                   load (OpenSeadragon #95). */
+                var center = new OpenSeadragon.Point(0.5,
+                        1 / (2 * viewer.source.aspectRatio));
+                viewer.viewport.zoomTo(2, center, true);
+                viewer_is_new = true;
+                /* Ensure we receive update-viewport events, OpenSeadragon
+                   #94 */
+                viewer.drawer.viewer = viewer;
+            });
+            viewer.addHandler("update-viewport", function() {
+                if (viewer_is_new) {
+                    setTimeout(function() {
+                        if (viewer.viewport) {
+                            viewer.viewport.goHome(false);
+                        }
+                    }, 1);
+                    viewer_is_new = false;
+                }
+            });
+
+        }
+
+        // Load slide
+        viewer.open(image);
+
+    }
+
+    open_slide("/histoslide/{{ Slide.tid }}.dzi");
+
+    // CSS doesn't provide a good way to specify a div of height
+    // (100% - height(header))
+    $(window).resize(function() {
+        $('#content').height($(window).height() -
+                    $('#header').outerHeight() - 20);
+    }).resize();
+
+});
+
+</script>    
+
+</body>

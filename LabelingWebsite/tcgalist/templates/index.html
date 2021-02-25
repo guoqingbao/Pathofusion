@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TCGA Pathology Image Labelling</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+        .center {
+            margin: auto;
+            width: 100%;
+            border: 1px solid #aaaaaa;
+            padding: 10px;
+        }
+  </style>
+   {% load addv %}
+   {% load staticfiles %}
+</head>
+
+<body>
+
+<div class="center">
+    <div>
+        <h2>TCGA Image List</h2>
+    
+        {% for patient in tcgapatients %}
+
+        {% if label_index|divisibleby:"6" %} <div class="row"> {% increment haverow %}  {% endif %}
+        <div class="col-md-2">
+        <div class="thumbnail">
+            {% if menu != None%}
+            <a href="/histoslide/{{patient.tid}}/?menu={{menu.menu}}&size={{menu.marker_size}}">
+            {% else %}
+            <a href="/histoslide/{{patient.tid}}/?menu=&size=50">
+            {% endif %}
+            <img src="{% static 'tcgalist/' %}{{patient.path}}" alt="Lights" style="width:100%">
+            <div class="caption">
+                <p>Case {{patient.tid|cut:"TCGA"}}</p>
+            </div>
+            </a>
+        </div>
+        </div>
+        
+        {% increment label_index %}
+
+        {% if label_index|divisibleby:"6" %} </div> {% decrement haverow %}  {% endif %}
+
+
+        {% if forloop.last and haverow > 0 %}  </div>  {% endif %}
+        {% endfor %}
+    
+    
+    </div>
+
+ <div class="text-center">
+<div class="pagination" >
+    <span class="step-links">
+        {% if tcgapatients.has_previous %}
+            <a href="?page=1">&laquo; First Page</a> &nbsp;
+            <a href="?page={{ tcgapatients.previous_page_number }}">Previous Page</a> &nbsp;
+        {% endif %}
+
+        <span class="current">
+            Page {{ tcgapatients.number }} of {{ tcgapatients.paginator.num_pages }} &nbsp;
+        </span>
+
+        {% if tcgapatients.has_next %}
+            <a href="?page={{ tcgapatients.next_page_number }}">Next Page</a> &nbsp;
+            <a href="?page={{ tcgapatients.paginator.num_pages }}">Last Page &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+ </div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Pathology Image Labelling</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  {% load staticfiles %}
+  {% load addv %}
+
+<script>
+function onSelection() {
+  var item = document.getElementById("imglist").value;
+  if(item == "GBM")
+  {
+    window.location = "/";
+  }
+  else
+  {
+    window.location = "/?menu="+item;
+  }
+}
+</script>
+
+</head>
+<body>
+
+<div class="container">
+    <p>
+        <h2>Pathology Image List    &nbsp; &nbsp;  &nbsp; 
+
+          <select id="imglist" onchange="onSelection()">
+            {% if menu.menu == "GBM" %}
+            <option value="GBM" selected>GBM</option>
+            {% else %}
+            <option value="GBM">GBM</option>
+            {% endif %}
+
+            {% for item in ihcs %}
+            
+            {% if menu.menu == item %}
+            <option value="{{item}}" selected>{{item}}</option>
+            {% else %}
+            <option value="{{item}}">{{item}}</option>
+            {% endif %}
+
+            {% endfor %}
+          </select>
+           &nbsp; &nbsp; &nbsp; 
+        <a href="/logout" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-log-out"></span> Log out
+          </a>
+        </h2>
+      </p>
+
+
+  <p>Click on the images to label them.</p>
+
+
+
+  <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#label1">Unlabeled Images({{unlabled_num}})</a></li>
+      <li><a data-toggle="tab" href="#label2">Labeled Images({{labled_num}})</a></li>
+    </ul>
+  
+
+
+ 
+
+  <div class="tab-content">
+      <div id="label1" class="tab-pane fade in active">
+        <p></p>
+
+          {% for img in images %}
+          {% if img.labels == "null" or img.labels == "[]" %} 
+          {% if label_index|divisibleby:"6" %} <div class="row"> {% increment haverow %}  {% endif %}
+          <div class="col-md-2">
+            <div class="thumbnail">
+              {% if menu != None %}
+              <a href="/labelling/{{img.pid}}?menu={{menu.menu}}&localserver={{menu.localserver}}&size={{menu.marker_size}}">
+              {% else %}
+              <a href="/labelling/{{img.pid}}?menu=&localserver={{menu.localserver}}&size=50">
+              {% endif %}
+                <img src="{% static 'labelling/' %}{{img.thumb_image}}" alt="Lights" style="width:100%">
+                <div class="caption">
+                  <p>Case {{img.pid}}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          
+          {% increment label_index %}
+
+          {% if label_index|divisibleby:"6" %} </div> {% decrement haverow %}  {% endif %}
+          
+          {% endif %}
+
+          {% if forloop.last and haverow > 0 %}  </div>  {% endif %}
+          {% endfor %}
+
+
+      </div>
+
+      <div id="label2" class="tab-pane fade">
+          <p></p>
+          {% for img in images %}
+          {% if img.labels != "null" and img.labels != "[]" %} 
+          {% if unlabel_index|divisibleby:"6" %} <div class="row"> {% endif %}
+          {% if unlabel_index|divisibleby:"6" %} {%increment haverow1%} {% endif %}
+
+          <div class="col-md-2">
+            <div class="thumbnail">
+              {% if menu != None %}
+              <a href="/labelling/{{img.pid}}?menu={{menu.menu}}&localserver={{menu.localserver}}&size={{menu.marker_size}}">
+              {% else %}
+              <a href="/labelling/{{img.pid}}?menu=&localserver={{menu.localserver}}&size=50">
+              {% endif %}
+
+                <img src="{% static 'labelling/' %}{{img.thumb_image}}" alt="Lights" style="width:100%">
+                <div class="caption">
+                  <p>Image Case {{img.pid}}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          
+          {% increment unlabel_index %}
+          {% if unlabel_index|divisibleby:"6" %} </div> {%decrement haverow1%} {% endif %}
+
+          {% endif %}
+
+          {% if forloop.last and haverow1 > 0 %}  </div>  {% endif %}
+          {% endfor %}
+
+
+
+      </div>
+    </div>
+ 
+
+
+
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pathology Image Labelling</title>
+  {% comment %} <link rel="stylesheet" type="text/css" href="./zoom.css" /> {% endcomment %}
+  {% load staticfiles %}
+
+  <link rel="stylesheet" type="text/css" href="{% static 'labelling/zoom.css' %}" />
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"> </script>
+  <script>
+    var url = new URL(window.location.href);
+    var localserver = url.searchParams.get("localserver");
+
+    if(localserver == "True")
+    {
+        var label_image = "http://localhost/labelling/{{image}}";
+    }
+    else
+    {
+        var label_image = "{% static 'labelling/' %}{{image}}";
+    }
+    
+    
+    var patient_id = {{pid}};
+    var post_url = "submit";
+    var strLabels = '{{labels}}';
+    var newLabels = strLabels.replace(/&#39;/g, '"');
+    var labels = JSON.parse(newLabels)
+    var marker_size = {{size}}
+    var curMenu = "{{menu}}";
+  </script>
+  {% load hasGroup %}
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+    .w3-btn {
+      width: 180px;
+      opacity: 0.8;
+    }
+
+    .loader {
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite; /* Safari */
+      animation: spin 2s linear infinite;
+    }
+    
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+
+
+<canvas id="canv">
+  
+</canvas>
+
+<div class="loader" id="overlay" style="position: absolute; top:30%; left:45%;"></div>
+
+
+<div class="w3-container">
+
+  <p>
+
+    {% for mark in marks %}
+    <button class="w3-btn w3-{{mark.color}} w3-round" style="position: absolute; top:{% widthratio forloop.counter 1 50 %}px; left:20px;" onclick="OnColor(this,'{{mark.color}}')">{{mark.name}}</button>
+    {% endfor %}
+
+    {% comment %} <button class="w3-btn w3-black w3-round" style="position: absolute; top:50px; left:20px;" onclick="OnColor(this,'black')">Necrosis</button>
+    <button class="w3-btn w3-yellow w3-round" style="position: absolute; top:100px; left:20px;" onclick="OnColor(this,'yellow')">Proliferation</button>
+    <button class="w3-btn w3-blue w3-round" style="position: absolute; top:150px; left:20px;" onclick="OnColor(this,'blue')">Bleeding</button>
+    <button class="w3-btn w3-green w3-round" style="position: absolute; top:200px; left:20px;" onclick="OnColor(this,'green')">Background</button>
+
+
+    <button class="w3-btn w3-orange w3-round" style="position: absolute; top:260px; left:20px;" onclick="OnColor(this,'orange')">Other Type1</button>
+    <button class="w3-btn w3-purple w3-round" style="position: absolute; top:310px; left:20px;" onclick="OnColor(this,'purple')">Other Type2</button>
+     {% endcomment %}
+
+    <button class="w3-btn w3-blue-grey w3-round" style="position: absolute; top:420px; left:20px;" onclick="OnColor(this,'eraser')">Eraser</button>
+    <button class="w3-btn w3-grey w3-round" style="position: absolute; top:470px; left:20px;" onclick="OnColor(this,'undo')">Undo</button> 
+    
+    {% if request.user|hasGroup:"ImageGroup" %}
+    <button class="w3-btn w3-aqua w3-round" style="position: absolute; top:520px; left:20px;" onclick="PostData()">Save</button>
+    {% endif %}
+
+    {% if menu == "GBM" %}
+    <a href = "/" class="w3-btn w3-cyan w3-round" style="position: absolute; top:570px; left:20px;">Go Back</a>
+    {% else %}
+    <a href = "/?menu={{menu}}" class="w3-btn w3-cyan w3-round" style="position: absolute; top:570px; left:20px;">Go Back</a>
+    {% endif %}
+  </p>
+</div>
+<script src="{% static 'labelling/zoom.js' %}"></script>
+</body>
+
+</html>
